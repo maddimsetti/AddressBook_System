@@ -1,42 +1,54 @@
 package com.addressbook;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
  * Create Class for Defining the Address Book
  */
 public class AddressBook {
+    //Created Enum for the File_Io
+    public enum IOService {
+        CONSOLE_IO,FILE_IO
+    }
     //variables
     private static final Scanner sc = new Scanner(System.in);
-    private static final List<ContactPerson> person = new ArrayList<ContactPerson>();
-    private static HashMap<String, List<ContactPerson>> addressBookSystem = new HashMap<>();
+    public static List<ContactPerson> person = new ArrayList<ContactPerson>();
+    public static HashMap<String, List<ContactPerson>> addressBookSystem = new HashMap<>();
 
-
+    /**
+     * Create Constructor for Initializing the variables with parameters
+     */
+    public AddressBook(List<ContactPerson> person) {
+        this.person = person;
+    }
+    //Empty Constructor
+    public AddressBook() { }
     /**
      * Create Method to Add the Contact List.
      */
-    public void addContactDetails () {
+    public void addContactDetails (Scanner consoleInputReader) {
         System.out.println("How Many Contacts Do You Want to Enter In Address Book");
-        int numberOfContacts = sc.nextInt();
+        int numberOfContacts = consoleInputReader.nextInt();
         for (int i = 1; i <= numberOfContacts; i++) {
             System.out.println("enter the First Name");
-            Scanner sc = new Scanner(System.in);
-            String firstName = sc.nextLine();
+            consoleInputReader.nextLine();
+            String firstName = consoleInputReader.nextLine();
             System.out.println("enter the Last Name");
-            String lastName = sc.nextLine();
+            String lastName = consoleInputReader.nextLine();
             System.out.println("enter the Address");
-            String address = sc.nextLine();
+            String address = consoleInputReader.nextLine();
             System.out.println("enter the City");
-            String city = sc.nextLine();
+            String city = consoleInputReader.nextLine();
             System.out.println("enter the State");
-            String state = sc.nextLine();
+            String state = consoleInputReader.nextLine();
             System.out.println("enter the Zip Code");
-            int zipCode = sc.nextInt();
-            sc.nextLine();
+            int zipCode = consoleInputReader.nextInt();
+            consoleInputReader.nextLine();
             System.out.println("enter the Email address");
-            String eMail = sc.nextLine();
+            String eMail = consoleInputReader.nextLine();
             System.out.println("enter the Phone Number");
-            String phoneNumber = sc.nextLine();
+            String phoneNumber = consoleInputReader.nextLine();
 
             String pName = firstName + lastName;
             for (Iterator<ContactPerson> iterator = person.iterator(); iterator.hasNext(); ) {
@@ -51,6 +63,25 @@ public class AddressBook {
             person.add(new ContactPerson(firstName, lastName, address, city, state, zipCode, eMail, phoneNumber)); //Storing the Contacts
             System.out.println(person); //Printing the Contacts
         }
+    }
+
+    /**
+     * Create Method for Reading the AddressBook from Console
+     */
+    public List<ContactPerson> readAddressBook(IOService ioService) {
+        if (ioService.equals(AddressBook.IOService.CONSOLE_IO))
+            this.person = new AddressBookIOService().readData();
+        return person;
+    }
+
+    /**
+     * Create Main Method for Writing the addressBook to a File
+     */
+    public void writeAddressBook(AddressBook.IOService ioService) throws IOException {
+        if(ioService.equals(IOService.CONSOLE_IO))
+            System.out.println("\n Writing Employee PayRoll Roaster to Console\n " +person);
+        else if (ioService.equals(IOService.FILE_IO))
+            new AddressBookIOService().writeData(person);
     }
 
     /**
@@ -143,51 +174,8 @@ public class AddressBook {
         System.out.println("No contact With First Name " +firstName+ " will found" );
     }
 
-    /**
-     * Create Main Method for Implementing the Address Book
-     */
-    public static void addressBook() {
-        boolean option = false;
-        while (true) {
-            System.out.println("1.Create\n, 2.Edit\n, 3.Delete\n, 4.Exit the loop");
-            System.out.println("Enter the choice What you want do");
-            int choice = sc.nextInt();
-            switch (choice) {
-                case 1 -> {
-                    AddressBook addContact = new AddressBook();
-                    addContact.addContactDetails();
-                    option = true;
-                }
-                case 2 -> {
-                    AddressBook editContact = new AddressBook();
-                    editContact.editContactDetailsByFirstName();
-                    option = true;
-                }
-                case 3 -> {
-                    AddressBook deleteContact = new AddressBook();
-                    deleteContact.deleteContactByFirstName();       //Calling Delete Contact Method
-                    option = true;
-                }
-                case 4 -> System.exit(0);
-                default -> {
-                    System.out.println("Choice is incorrect");
-                }
-            }
-        }
-    }
 
-    public static void main (String[] args) {
-        System.out.println("Welcome to Address Book Program in AddressBook in Main Class");
-        System.out.println("Enter the Name of the Address Book");
-        sc.nextLine();
-        String addressBookName = sc.nextLine();
-        if (addressBookSystem.containsKey(addressBookName)) {
-            System.out.println("This Address Book Already Exists");
-        } else {
-            AddressBook addAddressBook = new AddressBook();
-            addressBookSystem.put(addressBookName, person);
-            addAddressBook.addressBook();
-        }
-    }
+
+
 
 }
