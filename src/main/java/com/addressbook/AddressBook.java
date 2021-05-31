@@ -1,9 +1,6 @@
 package com.addressbook;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Create Class for Defining the Address Book
@@ -12,6 +9,7 @@ public class AddressBook {
     //variables
     private static final Scanner sc = new Scanner(System.in);
     private static final List<ContactPerson> person = new ArrayList<ContactPerson>();
+    private static HashMap<String, List<ContactPerson>> addressBookSystem = new HashMap<>();
 
 
     /**
@@ -138,8 +136,7 @@ public class AddressBook {
     /**
      * Create Main Method for Implementing the Address Book
      */
-    public static void main (String[] args) {
-        System.out.println("Welcome to Address Book Program in AddressBook in Main Class");
+    public static void addressBook() {
         boolean option = false;
         while (true) {
             System.out.println("1.Create\n, 2.Edit\n, 3.Delete\n, 4.Exit the loop");
@@ -168,4 +165,19 @@ public class AddressBook {
             }
         }
     }
+
+    public static void main (String[] args) {
+        System.out.println("Welcome to Address Book Program in AddressBook in Main Class");
+        System.out.println("Enter the Name of the Address Book");
+        sc.nextLine();
+        String addressBookName = sc.nextLine();
+        if (addressBookSystem.containsKey(addressBookName)) {
+            System.out.println("This Address Book Already Exists");
+        } else {
+            AddressBook addAddressBook = new AddressBook();
+            addressBookSystem.put(addressBookName, person);
+            addAddressBook.addressBook();
+        }
+    }
+
 }
