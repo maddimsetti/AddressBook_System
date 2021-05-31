@@ -38,15 +38,25 @@ public class AddressBook {
             System.out.println("enter the Phone Number");
             String phoneNumber = sc.nextLine();
 
-            person.add(new ContactPerson(firstName, lastName, address, city, state, zipCode, eMail, phoneNumber));
-            System.out.println(person);
+            String pName = firstName + lastName;
+            for (Iterator<ContactPerson> iterator = person.iterator(); iterator.hasNext(); ) {
+                ContactPerson temp = iterator.next();
+                String contactName = temp.getFirstName() + temp.getLastName();
+                if (contactName.equals(pName)) {
+                    System.out.println("Sorry this contact already exists.");
+                    return; // the name exists, so we exit the method.
+                }
+            }
+            // Otherwise... you've checked all the elements, and have not found a duplicate
+            person.add(new ContactPerson(firstName, lastName, address, city, state, zipCode, eMail, phoneNumber)); //Storing the Contacts
+            System.out.println(person); //Printing the Contacts
         }
     }
 
     /**
      * Create Method to Edit the Contact using First Name.
      */
-    public  void editContactDetailsByFirstName() {
+    public void editContactDetailsByFirstName() {
         System.out.println("Enter First Name to verify and edit the Contact list");
         Scanner sc = new Scanner(System.in);
         String firstName = sc.nextLine();
