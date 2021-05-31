@@ -18,27 +18,31 @@ public class AddressBook {
      * Create Method to Add the Contact List.
      */
     public void addContactDetails () {
-        System.out.println("enter the First Name");
-        Scanner sc = new Scanner(System.in);
-        String firstName = sc.nextLine();
-        System.out.println("enter the Last Name");
-        String lastName = sc.nextLine();
-        System.out.println("enter the Address");
-        String address = sc.nextLine();
-        System.out.println("enter the City");
-        String city = sc.nextLine();
-        System.out.println("enter the State");
-        String state = sc.nextLine();
-        System.out.println("enter the Zip Code");
-        int zipCode = sc.nextInt();
-        sc.nextLine();
-        System.out.println("enter the Email address");
-        String eMail = sc.nextLine();
-        System.out.println("enter the Phone Number");
-        String phoneNumber = sc.nextLine();
+        System.out.println("How Many Contacts Do You Want to Enter In Address Book");
+        int numberOfContacts = sc.nextInt();
+        for (int i = 1; i <= numberOfContacts; i++) {
+            System.out.println("enter the First Name");
+            Scanner sc = new Scanner(System.in);
+            String firstName = sc.nextLine();
+            System.out.println("enter the Last Name");
+            String lastName = sc.nextLine();
+            System.out.println("enter the Address");
+            String address = sc.nextLine();
+            System.out.println("enter the City");
+            String city = sc.nextLine();
+            System.out.println("enter the State");
+            String state = sc.nextLine();
+            System.out.println("enter the Zip Code");
+            int zipCode = sc.nextInt();
+            sc.nextLine();
+            System.out.println("enter the Email address");
+            String eMail = sc.nextLine();
+            System.out.println("enter the Phone Number");
+            String phoneNumber = sc.nextLine();
 
-        person.add(new ContactPerson(firstName,lastName,address,city,state,zipCode,eMail,phoneNumber));
-        System.out.println(person);
+            person.add(new ContactPerson(firstName, lastName, address, city, state, zipCode, eMail, phoneNumber));
+            System.out.println(person);
+        }
     }
 
     /**
@@ -138,7 +142,7 @@ public class AddressBook {
         System.out.println("Welcome to Address Book Program in AddressBook in Main Class");
         boolean option = false;
         while (true) {
-            System.out.println("1.Create\n, 2.Edit\n,3.Delete\n, 4.Exit the loop");
+            System.out.println("1.Create\n, 2.Edit\n, 3.Delete\n, 4.Exit the loop");
             System.out.println("Enter the choice What you want do");
             int choice = sc.nextInt();
             switch (choice) {
