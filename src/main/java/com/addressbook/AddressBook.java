@@ -113,13 +113,32 @@ public class AddressBook {
     }
 
     /**
+     * Create Method to Delete the Contact. Will work  as there is no  contacts with  first name.
+     */
+    public static void deleteContactByFirstName() {
+        System.out.println("Enter the First Name to verify and delete the contact");
+        Scanner sc = new Scanner(System.in);
+        String firstName = sc.nextLine();
+        int flag = 0;
+        for (Iterator<ContactPerson> iterator = person.iterator(); iterator.hasNext();) {
+            ContactPerson temp = iterator.next();
+            if (temp.getFirstName().equalsIgnoreCase(firstName)){
+                iterator.remove();
+                System.out.println("The Contact with First Name " +firstName+ " Deleted Successfully");
+                return;
+            }
+        }
+        System.out.println("No contact With First Name " +firstName+ " will found" );
+    }
+
+    /**
      * Create Main Method for Implementing the Address Book
      */
     public static void main (String[] args) {
         System.out.println("Welcome to Address Book Program in AddressBook in Main Class");
         boolean option = false;
         while (true) {
-            System.out.println("1.Create\n, 2.Edit\n, 3.Exit the loop");
+            System.out.println("1.Create\n, 2.Edit\n,3.Delete\n, 4.Exit the loop");
             System.out.println("Enter the choice What you want do");
             int choice = sc.nextInt();
             switch (choice) {
@@ -133,7 +152,12 @@ public class AddressBook {
                     editContact.editContactDetailsByFirstName();
                     option = true;
                 }
-                case 3 -> System.exit(0);
+                case 3 -> {
+                    AddressBook deleteContact = new AddressBook();
+                    deleteContact.deleteContactByFirstName();       //Calling Delete Contact Method
+                    option = true;
+                }
+                case 4 -> System.exit(0);
                 default -> {
                     System.out.println("Choice is incorrect");
                 }
