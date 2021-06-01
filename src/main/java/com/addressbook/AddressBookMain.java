@@ -21,7 +21,8 @@ public class AddressBookMain {
         boolean option = false;
         while (true) {
             System.out.println("1.Create\n, 2.Edit\n, 3.Delete\n, 4.Write Data To File\n, 5.Read Data from Console\n, " +
-                    "6.Write Contacts to CSV\n, 7.Read Contacts from CSV\n, 8.Exit the loop");
+                    "6.Write Contacts to CSV\n, 7.Read Contacts from CSV\n, 8.Write Contacts to JSON File\n, " +
+                    "9.Read Contacts From JSON File\n, 10.Exit the loop");
             System.out.println("Enter the choice What you want do");
             int choice = sc.nextInt();
             switch (choice) {
@@ -57,7 +58,15 @@ public class AddressBookMain {
                     AddressBook readCSV = new AddressBook();
                     readCSV.readAddressBookContactsFromCSV();
                 }
-                case 8 -> System.exit(0);
+                case 8 -> {
+                    AddressBook writeContactsJSON = new AddressBook();
+                    writeContactsJSON.writeContactsToJsonFile();
+                }
+                case 9 -> {
+                    AddressBook readContactsJSON = new AddressBook();
+                    readContactsJSON.readContactsFromJsonFile();
+                }
+                case 10 -> System.exit(0);
                 default -> {
                     System.out.println("Choice is incorrect");
                 }

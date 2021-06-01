@@ -7,11 +7,14 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import com.opencsv.exceptions.CsvValidationException;
+import com.google.gson.Gson;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -25,6 +28,7 @@ public class AddressBook {
     }
     //variables
     private static final String SAMPLE_CSV_FILE_PATH = "O:\\Intellij\\AddressBook_System\\src\\test\\resources\\contacts.csv";
+    private static final String SAMPLE_JSON_FILE_PATH = "O:\\Intellij\\AddressBook_System\\src\\test\\resources\\contacts.json";
     private static final Scanner sc = new Scanner(System.in);
     public static List<ContactPerson> person = new ArrayList<ContactPerson>();
     public static HashMap<String, List<ContactPerson>> addressBookSystem = new HashMap<>();
@@ -129,6 +133,38 @@ public class AddressBook {
             }
         } catch (CsvValidationException e) {
             e.printStackTrace();
+        }
+    }
+    /**
+     * Create Method for Writing the addressBook contacts from Json File
+     */
+    public void writeContactsToJsonFile() throws IOException {
+        {
+            Gson gson = new Gson();
+            String json = gson.toJson(person);
+            FileWriter writer = new FileWriter(SAMPLE_JSON_FILE_PATH);
+            writer.write(json);
+            writer.close();
+        }
+    }
+    /**
+     * Create Method for Reading the addressBook contacts from Json File
+     */
+    public void readContactsFromJsonFile() throws IOException {
+        List<ContactPerson> contactPersonList = null;
+        try (Reader reader = Files.newBufferedReader(Path.of(SAMPLE_JSON_FILE_PATH));) {
+            Gson gson = new Gson();
+            contactPersonList = new ArrayList<ContactPerson>(Arrays.asList(gson.fromJson(reader, ContactPerson[].class)));
+            for (ContactPerson contactList : contactPersonList) {
+                System.out.println("First Name : " + contactList.getFirstName());
+                System.out.println("Last Name : " + contactList.getLastName());
+                System.out.println("Address : " + contactList.getAddress());
+                System.out.println("City : " + contactList.getCity());
+                System.out.println("State : " + contactList.getState());
+                System.out.println("ZipCode : " + contactList.getZipCode());
+                System.out.println("Email : " + contactList.getMail());
+                System.out.println("Phone number : " + contactList.getPhoneNumber());
+            }
         }
     }
 
