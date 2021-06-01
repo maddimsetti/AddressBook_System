@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Create Class for Defining the Address Book
@@ -29,15 +30,18 @@ public class AddressBook {
     //variables
     private static final String SAMPLE_CSV_FILE_PATH = "O:\\Intellij\\AddressBook_System\\src\\test\\resources\\contacts.csv";
     private static final String SAMPLE_JSON_FILE_PATH = "O:\\Intellij\\AddressBook_System\\src\\test\\resources\\contacts.json";
-    private static final Scanner sc = new Scanner(System.in);
-    public static List<ContactPerson> person = new ArrayList<ContactPerson>();
-    public static HashMap<String, List<ContactPerson>> addressBookSystem = new HashMap<>();
+    public static List<ContactPerson> person = new ArrayList<>();
+    public static Map<String,List<ContactPerson>> personByCity;
+    public static Map<String,List<ContactPerson>> personByState;
 
     /**
      * Create Constructor for Initializing the variables with parameters
      */
     public AddressBook(List<ContactPerson> person) {
         this.person = person;
+        this.personByCity = new HashMap<>();
+        this.personByState= new HashMap<>();
+
     }
     //Empty Constructor
     public AddressBook() { }
@@ -77,7 +81,7 @@ public class AddressBook {
                 }
             }
             // Otherwise... you've checked all the elements, and have not found a duplicate
-            person.add(new ContactPerson(firstName, lastName, address, city, state, zipCode, eMail, phoneNumber)); //Storing the Contacts
+            person.add(new ContactPerson(firstName, lastName, address, city, state, zipCode, eMail, phoneNumber));//Storing the Contacts
             System.out.println(person); //Printing the Contacts
         }
     }
@@ -178,7 +182,7 @@ public class AddressBook {
         for (Iterator<ContactPerson> iterator = person.iterator(); iterator.hasNext();) {
             ContactPerson temp = iterator.next();
             if (temp.getFirstName().equalsIgnoreCase(firstName)) {
-                System.out.println("1.First Name\n,2.Second Name\n,3.Address\n,4.City\n,5.State\n,6.Zip Code\n,7.Email Address\n,8.Phone Number\n");
+                System.out.println(" 1.First Name\n 2.Second Name\n 3.Address\n 4.City\n 5.State\n 6.Zip Code\n 7.Email Address\n 8.Phone Number\n");
                 System.out.println("Enter the choice What you want to Edit");
                 int choice = sc.nextInt();
                 switch (choice) {       // choosing which option as to edit
@@ -258,8 +262,23 @@ public class AddressBook {
         System.out.println("No contact With First Name " +firstName+ " will found" );
     }
 
+    /**
+     * Create Method to Search the Contact By Using City Name
+     */
+    public void searchPersonByCity(String city) {
+        List<ContactPerson> search = person.stream().filter(first -> first.getCity().equals(city)).collect(Collectors.toList());
+        for (ContactPerson contacts : search ) {
+            System.out.println("FirstName: " + contacts.getFirstName() + " LastName: " + contacts.getLastName());
+        }
+    }
 
-
-
-
+    /**
+     * Create Method to Search the Contact By Using State Name
+     */
+    public void searchPersonByState(String state) {
+        List<ContactPerson> search = person.stream().filter(first -> first.getState().equals(state)).collect(Collectors.toList());
+        for (ContactPerson contacts : search ) {
+            System.out.println("FirstName: " + contacts.getFirstName() + " LastName: " + contacts.getLastName());
+        }
+    }
 }

@@ -6,7 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Create class for the Address Book IO service
+ */
 public class AddressBookIOService {
     //Variables
     public static String ADDRESS_BOOK_FILE_NAME = "addressBook-file.txt";
