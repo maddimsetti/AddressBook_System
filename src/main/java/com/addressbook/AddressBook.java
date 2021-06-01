@@ -1,6 +1,18 @@
 package com.addressbook;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import com.opencsv.exceptions.CsvValidationException;
+
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -12,6 +24,7 @@ public class AddressBook {
         CONSOLE_IO,FILE_IO
     }
     //variables
+    private static final String SAMPLE_CSV_FILE_PATH = "O:\\Intellij\\AddressBook_System\\src\\test\\resources\\contacts.csv";
     private static final Scanner sc = new Scanner(System.in);
     public static List<ContactPerson> person = new ArrayList<ContactPerson>();
     public static HashMap<String, List<ContactPerson>> addressBookSystem = new HashMap<>();
@@ -82,6 +95,41 @@ public class AddressBook {
             System.out.println("\n Writing Employee PayRoll Roaster to Console\n " +person);
         else if (ioService.equals(IOService.FILE_IO))
             new AddressBookIOService().writeData(person);
+    }
+
+    /**
+     * Create Method for Writing the addressBook contacts to csv
+     */
+    public void writeAddressBookContactsToCSV() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+        try (Writer writer = Files.newBufferedWriter(Paths.get(SAMPLE_CSV_FILE_PATH));) {
+            StatefulBeanToCsvBuilder<ContactPerson> builder = new StatefulBeanToCsvBuilder<>(writer);
+            StatefulBeanToCsv<ContactPerson> beanWriter = builder.build();
+            beanWriter.write(person);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Create Method for Reading the addressBook contacts from a csv
+     */
+    public void readAddressBookContactsFromCSV() throws IOException {
+        try (Reader reader = Files.newBufferedReader(Paths.get(SAMPLE_CSV_FILE_PATH));
+             CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();) {
+            String[] nextRecord;
+            while ((nextRecord = csvReader.readNext()) != null) {
+                System.out.println("First Name - " + nextRecord[0]);
+                System.out.println("Last Name - " + nextRecord[1]);
+                System.out.println("Address - " + nextRecord[1]);
+                System.out.println("City - " + nextRecord[1]);
+                System.out.println("State - " + nextRecord[1]);
+                System.out.println("Email - " + nextRecord[1]);
+                System.out.println("Phone - " + nextRecord[1]);
+                System.out.println("Zip - " + nextRecord[1]);
+            }
+        } catch (CsvValidationException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

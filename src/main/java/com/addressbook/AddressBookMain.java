@@ -1,5 +1,8 @@
 package com.addressbook;
 
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -14,10 +17,11 @@ public class AddressBookMain {
     /**
      * Create Method for Implementing the Address Book
      */
-    public static void addressBook() throws IOException {
+    public static void addressBook() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
         boolean option = false;
         while (true) {
-            System.out.println("1.Create\n, 2.Edit\n, 3.Delete\n, 4.Write Data To File\n, 5.Read Data from Console\n,  6.Exit the loop");
+            System.out.println("1.Create\n, 2.Edit\n, 3.Delete\n, 4.Write Data To File\n, 5.Read Data from Console\n, " +
+                    "6.Write Contacts to CSV\n, 7.Read Contacts from CSV\n, 8.Exit the loop");
             System.out.println("Enter the choice What you want do");
             int choice = sc.nextInt();
             switch (choice) {
@@ -45,7 +49,15 @@ public class AddressBookMain {
                     AddressBook addressBook = new AddressBook();
                     addressBook.readAddressBook(AddressBook.IOService.CONSOLE_IO);
                 }
-                case 6 -> System.exit(0);
+                case 6 -> {
+                    AddressBook writeCSV = new AddressBook();
+                    writeCSV.writeAddressBookContactsToCSV();
+                }
+                case 7 -> {
+                    AddressBook readCSV = new AddressBook();
+                    readCSV.readAddressBookContactsFromCSV();
+                }
+                case 8 -> System.exit(0);
                 default -> {
                     System.out.println("Choice is incorrect");
                 }
@@ -56,7 +68,7 @@ public class AddressBookMain {
     /**
      * Create Main Method for Implementing the Address Book Main System
      */
-    public static void main (String[] args) throws IOException {
+    public static void main (String[] args) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
         System.out.println("Welcome to Address Book Program in AddressBook in Main Class");
         System.out.println("Enter the Name of the Address Book");
         sc.nextLine();
