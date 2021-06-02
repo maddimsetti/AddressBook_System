@@ -4,10 +4,8 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.addressbook.AddressBook.person;
 
@@ -123,16 +121,24 @@ public class AddressBookMain {
                     state();
                     addressBookMain.countPersonByState(state);
                 }
-                case 8 -> System.exit(0);
+                case 8 -> {
+                    sortByPersonsName();
+                }
+                case 9 -> System.exit(0);
             }
         }
     }
-
+    /**
+     * Create Method for state to follow DRY principal
+     */
     public static void state() {
         System.out.println("Enter the Name of StateName");
         scan.nextLine();
         state = scan.nextLine();
     }
+    /**
+     * Create Method for city to follow DRY principal
+     */
     public static void city() {
         System.out.println("Enter the Name of CityName");
         scan.nextLine();
@@ -212,6 +218,19 @@ public class AddressBookMain {
             }
         }
         System.out.println("Count Of Persons in City "+city+": "+countPersonByCity);
+    }
+    /**
+     * Create Method for List by sorting with Persons Name;
+     */
+    public static void sortByPersonsName () {
+        for (Map.Entry<String,AddressBook>entry:addressBookSystem.entrySet()){
+            AddressBook value = entry.getValue();
+            List<ContactPerson> sortedList = value.person.stream().sorted(Comparator.comparing(ContactPerson::getFirstName)).collect(Collectors.toList());
+            for(ContactPerson contact:sortedList){
+                System.out.println("The First Name: "+contact.getFirstName());
+                System.out.println("The Last Name: "+contact.getLastName());
+            }
+        }
     }
 
 
