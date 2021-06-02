@@ -82,7 +82,8 @@ public class AddressBookMain {
         AddressBookMain addressBookMain = new AddressBookMain();
         boolean option = false;
         while (true) {
-            System.out.println(" 1.Creating AddressBook\n 2.Search by City\n 3.Search by State\n 4.View Person By City\n 5.View Person By State\n 6.Count By city\n 7.Count By State\n 8.Exit the Loop");
+            System.out.println(" 1.Creating AddressBook\n 2.Search by City\n 3.Search by State\n 4.View Person By City\n 5.View Person By State\n 6.Count By city\n " +
+                    "7.Count By State\n 8.Sort Contact By Name\n 9.Sort Contact By City\n 10.Sort Contact By State\n 11.Sort Contact By ZipCode\n 12.Exit the Loop");
             System.out.println("Enter The Choice");
             int choice = scan.nextInt();
             switch (choice) {
@@ -124,10 +125,20 @@ public class AddressBookMain {
                 case 8 -> {
                     sortByPersonsName();
                 }
-                case 9 -> System.exit(0);
+                case 9 -> {
+                    sortContactsByCity();
+                }
+                case 10 -> {
+                    sortContactsByState();
+                }
+                case 11 -> {
+                    sortContactsByZipCode();
+                }
+                case 12 -> System.exit(0);
             }
         }
     }
+
     /**
      * Create Method for state to follow DRY principal
      */
@@ -227,8 +238,37 @@ public class AddressBookMain {
             AddressBook value = entry.getValue();
             List<ContactPerson> sortedList = value.person.stream().sorted(Comparator.comparing(ContactPerson::getFirstName)).collect(Collectors.toList());
             for(ContactPerson contact:sortedList){
-                System.out.println("The First Name: "+contact.getFirstName());
-                System.out.println("The Last Name: "+contact.getLastName());
+                System.out.println("The First Name: "+contact.getFirstName()+ " The Last Name: "+contact.getLastName());
+            }
+        }
+    }
+
+    public static void sortContactsByCity () {
+        for (Map.Entry<String,AddressBook>entry:addressBookSystem.entrySet()){
+            AddressBook value = entry.getValue();
+            List<ContactPerson> sortedList = value.person.stream().sorted(Comparator.comparing(ContactPerson::getCity)).collect(Collectors.toList());
+            for(ContactPerson contact:sortedList){
+                System.out.println("The First Name: "+contact.getFirstName()+ " The Last Name: "+contact.getLastName());
+            }
+        }
+    }
+
+    private static void sortContactsByState() {
+        for (Map.Entry<String,AddressBook>entry:addressBookSystem.entrySet()){
+            AddressBook value = entry.getValue();
+            List<ContactPerson> sortedList = value.person.stream().sorted(Comparator.comparing(ContactPerson::getState)).collect(Collectors.toList());
+            for(ContactPerson contact:sortedList){
+                System.out.println("The First Name: "+contact.getFirstName()+ " The Last Name: "+contact.getLastName());
+            }
+        }
+    }
+
+    private static void sortContactsByZipCode() {
+        for (Map.Entry<String,AddressBook>entry:addressBookSystem.entrySet()){
+            AddressBook value = entry.getValue();
+            List<ContactPerson> sortedList = value.person.stream().sorted(Comparator.comparing(ContactPerson::getZipCode)).collect(Collectors.toList());
+            for(ContactPerson contact:sortedList){
+                System.out.println("The First Name: "+contact.getFirstName()+ " The Last Name: "+contact.getLastName());
             }
         }
     }
