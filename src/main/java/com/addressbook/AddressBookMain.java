@@ -5,11 +5,11 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 import static com.addressbook.AddressBook.person;
-import static com.addressbook.AddressBook.personByCity;
 
 public class AddressBookMain {
     private static String addressBookName;
@@ -82,7 +82,7 @@ public class AddressBookMain {
         AddressBookMain addressBookMain = new AddressBookMain();
         boolean option = false;
         while (true) {
-            System.out.println(" 1.Creating AddressBook\n 2.Search by City\n 3.Search by State\n 4.Exit the Loop");
+            System.out.println(" 1.Creating AddressBook\n 2.Search by City\n 3.Search by State\n 4.View Person By City\n 5.View Person By State\n 6.Exit the Loop");
             System.out.println("Enter The Choice");
             int choice = scan.nextInt();
             switch (choice) {
@@ -109,7 +109,19 @@ public class AddressBookMain {
                     String state = scan.nextLine();
                     addressBookMain.searchByState(state);
                 }
-                case 4 -> System.exit(0);
+                case 4 -> {
+                    System.out.println("Enter the Name of City Name");
+                    scan.nextLine();
+                    String city = scan.nextLine();
+                    addressBookMain.viewPersonByCity(city);
+                }
+                case 5 -> {
+                    System.out.println("Enter the Name of State Name");
+                    scan.nextLine();
+                    String state = scan.nextLine();
+                    addressBookMain.viewPersonByState(state);
+                }
+                case 6 -> System.exit(0);
             }
         }
     }
@@ -131,6 +143,30 @@ public class AddressBookMain {
             AddressBook value = book.getValue();
             System.out.println("The AddressBookName: " + book.getKey());
             value.searchPersonByCity(city);
+        }
+    }
+    /**
+     * Create Method for View Person By City
+     */
+    private void viewPersonByCity(String city) {
+        for (Map.Entry<String,AddressBook> book : addressBookSystem.entrySet()) {
+            AddressBook value = book.getValue();
+            List<ContactPerson> contactPeople = value.personByState.entrySet().stream().filter(find -> find.getKey().equals(city)).map(Map.Entry::getValue).findFirst().orElse(null);
+            for(ContactPerson contact: contactPeople){
+                System.out.println("The First Name: " +contact.getFirstName() + " The Last Name: "+ contact.getLastName());
+            }
+        }
+    }
+    /**
+     * Create Method for View Person By State
+     */
+    private void viewPersonByState(String State) {
+        for (Map.Entry<String, AddressBook> book : addressBookSystem.entrySet()) {
+            AddressBook value = book.getValue();
+            List<ContactPerson> contactPeople = value.personByCity.entrySet().stream().filter(find -> find.getKey().equals(State)).map(Map.Entry::getValue).findFirst().orElse(null);
+            for(ContactPerson contact: contactPeople){
+                System.out.println("From AddressBook: " +book.getKey()+ " \nFirst Name: " + contact.getFirstName() + " Last Name: " + contact.getLastName());
+            }
         }
     }
 

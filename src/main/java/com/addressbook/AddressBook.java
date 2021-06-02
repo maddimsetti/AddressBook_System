@@ -49,6 +49,7 @@ public class AddressBook {
      * Create Method to Add the Contact List.
      */
     public void addContactDetails (Scanner consoleInputReader) {
+        List<ContactPerson> addContactDetails = new ArrayList<>();
         System.out.println("How Many Contacts Do You Want to Enter In Address Book");
         int numberOfContacts = consoleInputReader.nextInt();
         for (int i = 1; i <= numberOfContacts; i++) {
@@ -83,6 +84,16 @@ public class AddressBook {
             // Otherwise... you've checked all the elements, and have not found a duplicate
             person.add(new ContactPerson(firstName, lastName, address, city, state, zipCode, eMail, phoneNumber));//Storing the Contacts
             System.out.println(person); //Printing the Contacts
+
+            addContactDetails.add(new ContactPerson(firstName, lastName, address, city, state, zipCode, eMail, phoneNumber));
+
+            if(!personByState.containsKey(state)){
+                personByState.put(state,addContactDetails);
+            }
+
+            if(!personByCity.containsKey(city)){
+                personByCity.put(city,addContactDetails);
+            }
         }
     }
 
