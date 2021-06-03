@@ -3,8 +3,8 @@ package com.addressbook;
 import java.util.Objects;
 
 public class ContactPerson {
-    String firstName, lastName, address, city, state, eMail, phoneNumber;
-    int zipCode;
+    public String firstName, lastName, address, city, state, eMail, phoneNumber;
+    public int zipCode;
 
     /**
      * Create Constructor for Initializing the objects

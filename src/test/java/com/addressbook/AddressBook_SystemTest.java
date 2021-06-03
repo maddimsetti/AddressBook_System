@@ -15,4 +15,15 @@ public class AddressBook_SystemTest {
         List<ContactPerson> contactPersonList = addressBook.readAddressBook(AddressBook.IOService.DB_IO);
         Assertions.assertEquals(8,contactPersonList.size());
     }
+    /**
+     * @description create Method for Testing the AddressBook Contacts When Updated should match
+     *
+     */
+    @Test
+    public void givenNewZipCodeForContactPerson_WhenUpdated_ShouldMatch() throws AddressBookException {
+        AddressBook addressBook = new AddressBook();
+        addressBook.updateContact("Krishna",544789);
+        boolean result = addressBook.checkContactsInSyncWithDB("Krishna");
+        Assertions.assertTrue(result);
+    }
 }

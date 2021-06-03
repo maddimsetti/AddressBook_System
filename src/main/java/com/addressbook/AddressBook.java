@@ -34,18 +34,22 @@ public class AddressBook {
     public static List<ContactPerson> person = new ArrayList<>();
     public static Map<String,List<ContactPerson>> personByCity;
     public static Map<String,List<ContactPerson>> personByState;
-
+    private AddressBookDBService addressBookDBService;
+    //Constructor with single parameter
+    public AddressBook() {
+        addressBookDBService = AddressBookDBService.getInstance();
+    }
     /**
      * Create Constructor for Initializing the variables with parameters
      */
     public AddressBook(List<ContactPerson> person) {
+        this();
         this.person = person;
         this.personByCity = new HashMap<>();
         this.personByState= new HashMap<>();
 
     }
-    //Empty Constructor
-    public AddressBook() { }
+
     /**
      * Create Method to Add the Contact List.
      */
@@ -121,7 +125,7 @@ public class AddressBook {
      */
     public List<ContactPerson> readAddressBook(IOService ioService) throws AddressBookException {
         if (ioService.equals(IOService.DB_IO))
-            this.person = new AddressBookDBService().readData();
+            this.person = addressBookDBService.readData();
         return this.person;
     }
 
@@ -136,6 +140,31 @@ public class AddressBook {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    /**
+     * Create Method for Checking Contacts Sync with DataBase
+     */
+    public boolean checkContactsInSyncWithDB(String firstName) throws AddressBookException {
+        List<ContactPerson> contactPersonList = addressBookDBService.getAddressBookDetails(firstName);
+        return contactPersonList.equals(addressBookDBService.getAddressBookDetails(firstName));
+    }
+    /**
+     * Create Method for Update the Contacts
+     */
+    public void updateContact(String firstName,int zipCode) throws AddressBookException {
+        int result = addressBookDBService.updateContact(firstName, zipCode);
+        if (result == 0) return;
+        ContactPerson contactData = this.getContactData(firstName);
+        if (contactData != null) {
+            contactData.zipCode = zipCode;
+        }
+    }
+    /**
+     * Create Method for getting the data from contact Person
+     */
+    private ContactPerson getContactData (String firstName) {
+        return this.person.stream().filter(addressBookData -> addressBookData.firstName.equals(firstName))
+                .findFirst().orElse(null);
     }
 
     /**
