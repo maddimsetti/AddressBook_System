@@ -21,7 +21,7 @@ public class AddressBookMain {
     /**
      * Create Method for Implementing the Address Book
      */
-    public static void addressBook() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+    public static void addressBook() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, AddressBookException {
         boolean choose = false;
         while (true) {
             System.out.println(" 1.Create\n 2.Edit\n 3.Delete\n 4.Write Data To File\n 5.Read Data from Console\n " +
@@ -78,7 +78,7 @@ public class AddressBookMain {
     /**
      * Create Method for Implementing the Main Address Book
      */
-    public static void mainAddressBook() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+    public static void mainAddressBook() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, AddressBookException {
         AddressBookMain addressBookMain = new AddressBookMain();
         boolean option = false;
         while (true) {
@@ -242,7 +242,9 @@ public class AddressBookMain {
             }
         }
     }
-
+    /**
+     * Create Method for List by sorting with city;
+     */
     public static void sortContactsByCity () {
         for (Map.Entry<String,AddressBook>entry:addressBookSystem.entrySet()){
             AddressBook value = entry.getValue();
@@ -252,7 +254,9 @@ public class AddressBookMain {
             }
         }
     }
-
+    /**
+     * Create Method for List by sorting with state;
+     */
     private static void sortContactsByState() {
         for (Map.Entry<String,AddressBook>entry:addressBookSystem.entrySet()){
             AddressBook value = entry.getValue();
@@ -262,7 +266,9 @@ public class AddressBookMain {
             }
         }
     }
-
+    /**
+     * Create Method for List by sorting with zipCode;
+     */
     private static void sortContactsByZipCode() {
         for (Map.Entry<String,AddressBook>entry:addressBookSystem.entrySet()){
             AddressBook value = entry.getValue();
@@ -276,7 +282,7 @@ public class AddressBookMain {
     /**
      * Create Main Method for Implementing the Address Book Main System
      */
-    public static void main (String[] args) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+    public static void main (String[] args) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException, AddressBookException {
         System.out.println("Welcome to Address Book Program in AddressBook in Main Class");
         AddressBookMain addressBookMain = new AddressBookMain();
         addressBookMain.mainAddressBook();

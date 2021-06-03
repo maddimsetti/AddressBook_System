@@ -23,9 +23,10 @@ import java.util.stream.Collectors;
  * Create Class for Defining the Address Book
  */
 public class AddressBook {
-    //Created Enum for the File_Io
+
+    //Created Enum
     public enum IOService {
-        CONSOLE_IO,FILE_IO
+        CONSOLE_IO,FILE_IO,DB_IO
     }
     //variables
     private static final String SAMPLE_CSV_FILE_PATH = "O:\\Intellij\\AddressBook_System\\src\\test\\resources\\contacts.csv";
@@ -100,7 +101,7 @@ public class AddressBook {
     /**
      * Create Method for Reading the AddressBook from Console
      */
-    public List<ContactPerson> readAddressBook(IOService ioService) {
+    public List<ContactPerson> readAddressBookData(IOService ioService) {
         if (ioService.equals(AddressBook.IOService.CONSOLE_IO))
             this.person = new AddressBookIOService().readData();
         return person;
@@ -114,6 +115,14 @@ public class AddressBook {
             System.out.println("\n Writing Employee PayRoll Roaster to Console\n " +person);
         else if (ioService.equals(IOService.FILE_IO))
             new AddressBookIOService().writeData(person);
+    }
+    /**
+     * Create Method for Reading the AddressBook from DataBase
+     */
+    public List<ContactPerson> readAddressBook(IOService ioService) throws AddressBookException {
+        if (ioService.equals(IOService.DB_IO))
+            this.person = new AddressBookDBService().readData();
+        return this.person;
     }
 
     /**
