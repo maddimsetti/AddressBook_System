@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddressBookDBService {
+    private String sql;
+    private List<ContactPerson> addressBookList = new ArrayList<>();
     private PreparedStatement contactDataStatement;
     private static AddressBookDBService addressBookDBService;
     private AddressBookDBService() { }
@@ -72,6 +74,7 @@ public class AddressBookDBService {
         }
         return addressBookPersonList;
     }
+
     /**
      * Create Method for updating the contacts
      */
@@ -83,7 +86,6 @@ public class AddressBookDBService {
         String sql = "UPDATE addressBook set zipCode = 544789 WHERE firstName = 'Sowmith' ";
         try (Connection connection = this.getConnection()) {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
         } catch (SQLException e) {
             throw new AddressBookException(e.getMessage(),AddressBookException.ExceptionType.DATABASE_EXCEPTION);
         }
@@ -91,6 +93,7 @@ public class AddressBookDBService {
     }
     /**
      * Create Method for getting the AddressBook Details
+     * @param firstName
      */
     public List<ContactPerson> getAddressBookDetails(String firstName) throws AddressBookException {
         List<ContactPerson> contactPersonList = null;
@@ -120,15 +123,32 @@ public class AddressBookDBService {
      * Create Method for getting the data in between the DataRange
      */
     public List<ContactPerson> getAddressBookContactsForDataRange(LocalDate startDate, LocalDate endDate) throws AddressBookException {
-        List<ContactPerson> addressBookList = new ArrayList<>();
-        String sql = "SELECT * FROM addressBook WHERE start BETWEEN CAST('2018-01-01' AS DATE) AND DATE(NOW())";
+        sql = "SELECT * FROM addressBook WHERE start BETWEEN CAST('2018-01-01' AS DATE) AND DATE(NOW())";
+        getAddressBookList();
+        return addressBookList;
+    }
+    /**
+     * Create Method for getting the count of city
+     */
+    public int getCountByCity(String city) throws AddressBookException {
+        int count = 0;
+        sql = "SELECT * FROM addressBook where city = 'Bangalore'";
+        getAddressBookList();
+        count = (int) addressBookList.stream().count();
+        return count;
+    }
+    /**
+     * Create Method for getting the addressBook List
+     */
+    public List<ContactPerson> getAddressBookList () throws AddressBookException {
         try (Connection connection = this.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             addressBookList = this.getAddressBookData(resultSet);
-        } catch (SQLException e) {
+        } catch (SQLException | AddressBookException e) {
             throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
         }
         return addressBookList;
     }
+
 }

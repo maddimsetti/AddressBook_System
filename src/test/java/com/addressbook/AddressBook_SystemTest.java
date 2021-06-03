@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 public class AddressBook_SystemTest {
     /**
@@ -40,5 +41,13 @@ public class AddressBook_SystemTest {
         LocalDate endDate = LocalDate.now();
         List<ContactPerson> contactsForDataRange = addressBook.readAddressBookContactsForDataRange(startDate,endDate);
         Assertions.assertEquals(2, contactsForDataRange.size());
+    }
+
+    @Test
+    public void givenAddressBookInDB_WhenRetrieved_ShouldReturnCountOfCity() throws AddressBookException {
+        AddressBook addressBook = new AddressBook();
+        List<ContactPerson> contactPersonList = addressBook.readAddressBookData(AddressBook.IOService.DB_IO);
+        int contactsInCity =addressBook.readContactByCity("Bangalore");
+        Assertions.assertEquals(2,contactsInCity);
     }
 }

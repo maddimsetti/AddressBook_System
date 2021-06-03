@@ -174,6 +174,10 @@ public class AddressBook {
         return addressBookDBService.getAddressBookContactsForDataRange(startDate,endDate);
     }
 
+    public int readContactByCity(String city) throws AddressBookException {
+        return addressBookDBService.getCountByCity(city);
+    }
+
     /**
      * Create Method for Reading the addressBook contacts from a csv
      */
