@@ -83,6 +83,7 @@ public class AddressBookDBService {
         String sql = "UPDATE addressBook set zipCode = 544789 WHERE firstName = 'Sowmith' ";
         try (Connection connection = this.getConnection()) {
             Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
         } catch (SQLException e) {
             throw new AddressBookException(e.getMessage(),AddressBookException.ExceptionType.DATABASE_EXCEPTION);
         }
@@ -114,5 +115,20 @@ public class AddressBookDBService {
         } catch (SQLException e) {
             throw new AddressBookException(e.getMessage(),AddressBookException.ExceptionType.DATABASE_EXCEPTION);
         }
+    }
+    /**
+     * Create Method for getting the data in between the DataRange
+     */
+    public List<ContactPerson> getAddressBookContactsForDataRange(LocalDate startDate, LocalDate endDate) throws AddressBookException {
+        List<ContactPerson> addressBookList = new ArrayList<>();
+        String sql = "SELECT * FROM addressBook WHERE start BETWEEN CAST('2018-01-01' AS DATE) AND DATE(NOW())";
+        try (Connection connection = this.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            addressBookList = this.getAddressBookData(resultSet);
+        } catch (SQLException e) {
+            throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
+        }
+        return addressBookList;
     }
 }

@@ -16,6 +16,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -165,6 +166,12 @@ public class AddressBook {
     private ContactPerson getContactData (String firstName) {
         return this.person.stream().filter(addressBookData -> addressBookData.firstName.equals(firstName))
                 .findFirst().orElse(null);
+    }
+    /**
+     * Create Method for getting the data from DataBase
+     */
+    public List<ContactPerson> readAddressBookContactsForDataRange(LocalDate startDate, LocalDate endDate) throws AddressBookException {
+        return addressBookDBService.getAddressBookContactsForDataRange(startDate,endDate);
     }
 
     /**
